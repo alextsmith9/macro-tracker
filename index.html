@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="theme-color" content="#ffffff">
-
+  <meta name="theme-color" content="#f5f5f5">
   <title>Macro Tracker</title>
 
   <style>
@@ -19,33 +18,32 @@
       margin: 0;
       padding: 20px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f7;
+      background: #f5f5f5;
       color: #111;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 500px;
       margin: 0 auto;
     }
 
     h1 {
       text-align: center;
       margin: 10px 0 5px;
-      font-size: 32px;
     }
 
-    .date {
+    #date {
       text-align: center;
       color: #666;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
-    .card {
+    .macro-card {
       background: white;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .macro-header {
@@ -56,35 +54,23 @@
     }
 
     .macro-name {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
     }
 
-    .amount {
-      font-size: 20px;
-      font-weight: 600;
+    .macro-value {
+      font-size: 30px;
+      font-weight: 700;
     }
 
-    .progress-bg {
-      width: 100%;
-      height: 12px;
-      background: #e5e5e7;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: #111;
-      border-radius: 20px;
-      transition: width 0.2s ease;
+    .target {
+      color: #777;
+      font-size: 14px;
     }
 
     .buttons {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 7px;
     }
 
@@ -94,7 +80,7 @@
       padding: 12px 5px;
       font-size: 15px;
       font-weight: 600;
-      background: #e9e9ed;
+      background: #e9e9e9;
       color: #111;
       cursor: pointer;
     }
@@ -103,36 +89,58 @@
       transform: scale(0.97);
     }
 
-    .custom-button {
-      background: #111;
-      color: white;
+    .custom {
+      background: #dcdcdc;
     }
 
-    .minus-button {
-      background: #e9e9ed;
+    .minus {
+      background: #ededed;
     }
 
     .calories {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 18px;
+      margin-bottom: 14px;
       text-align: center;
-      font-size: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .calories-label {
+      color: #666;
+      font-size: 15px;
+    }
+
+    .calories-value {
+      font-size: 34px;
       font-weight: 700;
+      margin-top: 5px;
     }
 
-    .secondary-button {
-      width: 100%;
-      margin-top: 10px;
-      background: #e9e9ed;
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .danger {
-      background: #ffe5e5;
-      color: #b00020;
+    .action-button {
+      background: #111;
+      color: white;
+      padding: 14px;
     }
 
-    .targets-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 15px;
+    .settings {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .settings h2 {
+      margin-top: 0;
+      font-size: 19px;
     }
 
     .target-row {
@@ -140,436 +148,401 @@
       grid-template-columns: 1fr 100px;
       align-items: center;
       gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .target-row label {
-      font-weight: 600;
+      margin-bottom: 10px;
     }
 
     input {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 16px;
     }
 
-    .save-button {
+    .save-targets {
       width: 100%;
       background: #111;
       color: white;
-      margin-top: 5px;
+      margin-top: 8px;
     }
 
-    .undo {
-      width: 100%;
-      background: #dcdce1;
+    .progress {
+      height: 8px;
+      background: #e5e5e5;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
     }
 
-    .note {
-      text-align: center;
-      color: #777;
-      font-size: 13px;
-      margin-top: 20px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 400px) {
-      body {
-        padding: 12px;
-      }
-
-      .buttons {
-        gap: 5px;
-      }
-
-      button {
-        font-size: 13px;
-        padding: 11px 3px;
-      }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #111;
+      transition: width 0.2s ease;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <h1>Macro Tracker</h1>
-  <div class="date" id="date"></div>
+    <h1>Macro Tracker</h1>
+    <div id="date"></div>
 
-  <!-- PROTEIN -->
-  <div class="card">
-    <div class="macro-header">
-      <div class="macro-name">Protein</div>
-      <div class="amount">
-        <span id="protein">0</span> / <span id="proteinTarget">135</span> g
+    <!-- PROTEIN -->
+    <div class="macro-card">
+      <div class="macro-header">
+        <div>
+          <div class="macro-name">Protein</div>
+          <div class="target">Target: <span id="proteinTarget">135</span> g</div>
+        </div>
+        <div>
+          <span class="macro-value" id="proteinValue">0</span> g
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button onclick="addMacro('protein', 1)">+1</button>
+        <button onclick="addMacro('protein', 5)">+5</button>
+        <button class="custom" onclick="customAdd('protein')">Custom</button>
+        <button class="minus" onclick="addMacro('protein', -1)">−1</button>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" id="proteinProgress"></div>
       </div>
     </div>
 
-    <div class="progress-bg">
-      <div class="progress" id="proteinProgress"></div>
-    </div>
+    <!-- CARBS -->
+    <div class="macro-card">
+      <div class="macro-header">
+        <div>
+          <div class="macro-name">Carbs</div>
+          <div class="target">Target: <span id="carbsTarget">350</span> g</div>
+        </div>
+        <div>
+          <span class="macro-value" id="carbsValue">0</span> g
+        </div>
+      </div>
 
-    <div class="buttons">
-      <button class="minus-button" onclick="addMacro('protein', -1)">−1</button>
-      <button onclick="addMacro('protein', 1)">+1</button>
-      <button onclick="addMacro('protein', 5)">+5</button>
-      <button onclick="addMacro('protein', 10)">+10</button>
-      <button onclick="addMacro('protein', 20)">+20</button>
-      <button onclick="addMacro('protein', 30)">+30</button>
-      <button class="custom-button" onclick="customAdd('protein')">Custom</button>
-    </div>
-  </div>
+      <div class="buttons">
+        <button onclick="addMacro('carbs', 1)">+1</button>
+        <button onclick="addMacro('carbs', 5)">+5</button>
+        <button class="custom" onclick="customAdd('carbs')">Custom</button>
+        <button class="minus" onclick="addMacro('carbs', -1)">−1</button>
+      </div>
 
-  <!-- CARBS -->
-  <div class="card">
-    <div class="macro-header">
-      <div class="macro-name">Carbs</div>
-      <div class="amount">
-        <span id="carbs">0</span> / <span id="carbsTarget">350</span> g
+      <div class="progress">
+        <div class="progress-bar" id="carbsProgress"></div>
       </div>
     </div>
 
-    <div class="progress-bg">
-      <div class="progress" id="carbsProgress"></div>
-    </div>
+    <!-- FAT -->
+    <div class="macro-card">
+      <div class="macro-header">
+        <div>
+          <div class="macro-name">Fat</div>
+          <div class="target">Target: <span id="fatTarget">70</span> g</div>
+        </div>
+        <div>
+          <span class="macro-value" id="fatValue">0</span> g
+        </div>
+      </div>
 
-    <div class="buttons">
-      <button class="minus-button" onclick="addMacro('carbs', -1)">−1</button>
-      <button onclick="addMacro('carbs', 1)">+1</button>
-      <button onclick="addMacro('carbs', 5)">+5</button>
-      <button onclick="addMacro('carbs', 10)">+10</button>
-      <button onclick="addMacro('carbs', 20)">+20</button>
-      <button onclick="addMacro('carbs', 30)">+30</button>
-      <button class="custom-button" onclick="customAdd('carbs')">Custom</button>
-    </div>
-  </div>
+      <div class="buttons">
+        <button onclick="addMacro('fat', 1)">+1</button>
+        <button onclick="addMacro('fat', 5)">+5</button>
+        <button class="custom" onclick="customAdd('fat')">Custom</button>
+        <button class="minus" onclick="addMacro('fat', -1)">−1</button>
+      </div>
 
-  <!-- FAT -->
-  <div class="card">
-    <div class="macro-header">
-      <div class="macro-name">Fat</div>
-      <div class="amount">
-        <span id="fat">0</span> / <span id="fatTarget">70</span> g
+      <div class="progress">
+        <div class="progress-bar" id="fatProgress"></div>
       </div>
     </div>
 
-    <div class="progress-bg">
-      <div class="progress" id="fatProgress"></div>
-    </div>
-
-    <div class="buttons">
-      <button class="minus-button" onclick="addMacro('fat', -1)">−1</button>
-      <button onclick="addMacro('fat', 1)">+1</button>
-      <button onclick="addMacro('fat', 5)">+5</button>
-      <button onclick="addMacro('fat', 10)">+10</button>
-      <button onclick="addMacro('fat', 20)">+20</button>
-      <button onclick="addMacro('fat', 30)">+30</button>
-      <button class="custom-button" onclick="customAdd('fat')">Custom</button>
-    </div>
-  </div>
-
-  <!-- CALORIES -->
-  <div class="card">
+    <!-- CALORIES -->
     <div class="calories">
-      <span id="calories">0</span> kcal
-    </div>
-  </div>
-
-  <!-- UNDO / RESET -->
-  <div class="card">
-    <button class="undo" onclick="undo()">Undo last</button>
-    <button class="secondary-button danger" onclick="resetDay()">Reset day</button>
-  </div>
-
-  <!-- TARGETS -->
-  <div class="card">
-    <div class="targets-title">Daily Targets</div>
-
-    <div class="target-row">
-      <label>Protein (g)</label>
-      <input id="proteinInput" type="number" min="0" step="0.1">
+      <div class="calories-label">Calories</div>
+      <div class="calories-value" id="caloriesValue">0</div>
     </div>
 
-    <div class="target-row">
-      <label>Carbs (g)</label>
-      <input id="carbsInput" type="number" min="0" step="0.1">
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button class="action-button" onclick="undo()">Undo</button>
+      <button class="action-button" onclick="resetDay()">Reset Day</button>
     </div>
 
-    <div class="target-row">
-      <label>Fat (g)</label>
-      <input id="fatInput" type="number" min="0" step="0.1">
+    <!-- TARGET SETTINGS -->
+    <div class="settings">
+      <h2>Daily Targets</h2>
+
+      <div class="target-row">
+        <label for="proteinInput">Protein (g)</label>
+        <input id="proteinInput" type="number" min="0">
+      </div>
+
+      <div class="target-row">
+        <label for="carbsInput">Carbs (g)</label>
+        <input id="carbsInput" type="number" min="0">
+      </div>
+
+      <div class="target-row">
+        <label for="fatInput">Fat (g)</label>
+        <input id="fatInput" type="number" min="0">
+      </div>
+
+      <button class="save-targets" onclick="saveTargets()">Save Targets</button>
     </div>
 
-    <button class="save-button" onclick="saveTargets()">Save Targets</button>
   </div>
 
-  <div class="note">
-    Your data is saved on this device and resets automatically each new day.
-  </div>
+  <script>
+    const DATA_KEY = "macroData";
+    const DATE_KEY = "macroDate";
+    const TARGET_KEY = "macroTargets";
+    const HISTORY_KEY = "macroHistory";
 
-</div>
-
-<script>
-
-  const today = new Date().toISOString().split("T")[0];
-
-  let data = JSON.parse(localStorage.getItem("macroData")) || {
-    protein: 0,
-    carbs: 0,
-    fat: 0
-  };
-
-  let targets = JSON.parse(localStorage.getItem("macroTargets")) || {
-    protein: 135,
-    carbs: 350,
-    fat: 70
-  };
-
-  let history = JSON.parse(localStorage.getItem("macroHistory")) || [];
-
-  const savedDate = localStorage.getItem("macroDate");
-
-  // Automatically reset when the date changes
-  if (savedDate !== today) {
-    data = {
+    let data = {
       protein: 0,
       carbs: 0,
       fat: 0
     };
 
-    history = [];
-
-    localStorage.setItem("macroData", JSON.stringify(data));
-    localStorage.setItem("macroHistory", JSON.stringify(history));
-    localStorage.setItem("macroDate", today);
-  }
-
-  function saveData() {
-    localStorage.setItem("macroData", JSON.stringify(data));
-    localStorage.setItem("macroHistory", JSON.stringify(history));
-    localStorage.setItem("macroTargets", JSON.stringify(targets));
-    localStorage.setItem("macroDate", today);
-  }
-
-  function addMacro(macro, amount) {
-
-    const oldValue = data[macro];
-
-    history.push({
-      protein: data.protein,
-      carbs: data.carbs,
-      fat: data.fat
-    });
-
-    data[macro] += amount;
-
-    // Never allow a macro to go below zero
-    if (data[macro] < 0) {
-      data[macro] = 0;
-    }
-
-    // If nothing actually changed, remove the unnecessary history entry
-    if (data[macro] === oldValue) {
-      history.pop();
-      return;
-    }
-
-    saveData();
-    updateDisplay();
-  }
-
-  function customAdd(macro) {
-
-    const amount = prompt(
-      "How many grams of " + macro + " do you want to add?"
-    );
-
-    if (amount === null || amount.trim() === "") {
-      return;
-    }
-
-    const number = parseFloat(amount);
-
-    if (isNaN(number) || number <= 0) {
-      alert("Please enter a positive number.");
-      return;
-    }
-
-    addMacro(macro, number);
-  }
-
-  function undo() {
-
-    if (history.length === 0) {
-      alert("Nothing to undo.");
-      return;
-    }
-
-    data = history.pop();
-
-    saveData();
-    updateDisplay();
-  }
-
-  function resetDay() {
-
-    if (!confirm("Reset today's macros to zero?")) {
-      return;
-    }
-
-    history.push({
-      protein: data.protein,
-      carbs: data.carbs,
-      fat: data.fat
-    });
-
-    data = {
-      protein: 0,
-      carbs: 0,
-      fat: 0
+    let targets = {
+      protein: 135,
+      carbs: 350,
+      fat: 70
     };
 
-    saveData();
-    updateDisplay();
-  }
+    let history = [];
 
-  function saveTargets() {
-
-    const protein = parseFloat(
-      document.getElementById("proteinInput").value
-    );
-
-    const carbs = parseFloat(
-      document.getElementById("carbsInput").value
-    );
-
-    const fat = parseFloat(
-      document.getElementById("fatInput").value
-    );
-
-    if (
-      isNaN(protein) ||
-      isNaN(carbs) ||
-      isNaN(fat) ||
-      protein < 0 ||
-      carbs < 0 ||
-      fat < 0
-    ) {
-      alert("Please enter valid targets.");
-      return;
+    function todayString() {
+      const now = new Date();
+      return now.toISOString().split("T")[0];
     }
 
-    targets = {
-      protein: protein,
-      carbs: carbs,
-      fat: fat
-    };
+    function loadData() {
+      const savedDate = localStorage.getItem(DATE_KEY);
+      const today = todayString();
 
-    saveData();
-    updateDisplay();
+      if (savedDate !== today) {
+        data = {
+          protein: 0,
+          carbs: 0,
+          fat: 0
+        };
 
-    alert("Targets saved.");
-  }
+        history = [];
 
-  function updateDisplay() {
+        localStorage.setItem(DATA_KEY, JSON.stringify(data));
+        localStorage.setItem(DATE_KEY, today);
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+      } else {
+        const savedData = localStorage.getItem(DATA_KEY);
+        const savedHistory = localStorage.getItem(HISTORY_KEY);
+        const savedTargets = localStorage.getItem(TARGET_KEY);
 
-    document.getElementById("protein").textContent =
-      formatNumber(data.protein);
+        if (savedData) {
+          data = JSON.parse(savedData);
+        }
 
-    document.getElementById("carbs").textContent =
-      formatNumber(data.carbs);
+        if (savedHistory) {
+          history = JSON.parse(savedHistory);
+        }
 
-    document.getElementById("fat").textContent =
-      formatNumber(data.fat);
-
-    document.getElementById("proteinTarget").textContent =
-      formatNumber(targets.protein);
-
-    document.getElementById("carbsTarget").textContent =
-      formatNumber(targets.carbs);
-
-    document.getElementById("fatTarget").textContent =
-      formatNumber(targets.fat);
-
-    updateProgress(
-      "proteinProgress",
-      data.protein,
-      targets.protein
-    );
-
-    updateProgress(
-      "carbsProgress",
-      data.carbs,
-      targets.carbs
-    );
-
-    updateProgress(
-      "fatProgress",
-      data.fat,
-      targets.fat
-    );
-
-    const calories =
-      (data.protein * 4) +
-      (data.carbs * 4) +
-      (data.fat * 9);
-
-    document.getElementById("calories").textContent =
-      Math.round(calories);
-
-    document.getElementById("proteinInput").value =
-      targets.protein;
-
-    document.getElementById("carbsInput").value =
-      targets.carbs;
-
-    document.getElementById("fatInput").value =
-      targets.fat;
-  }
-
-  function updateProgress(id, value, target) {
-
-    if (target <= 0) {
-      document.getElementById(id).style.width = "0%";
-      return;
-    }
-
-    const percentage = Math.min(
-      (value / target) * 100,
-      100
-    );
-
-    document.getElementById(id).style.width =
-      percentage + "%";
-  }
-
-  function formatNumber(number) {
-
-    if (Number.isInteger(number)) {
-      return number;
-    }
-
-    return Number(number.toFixed(1));
-  }
-
-  // Display current date
-  document.getElementById("date").textContent =
-    new Date().toLocaleDateString(
-      undefined,
-      {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
+        if (savedTargets) {
+          targets = JSON.parse(savedTargets);
+        }
       }
-    );
 
-  updateDisplay();
+      updateTargetInputs();
+      updateDisplay();
+    }
 
-</script>
+    function saveData() {
+      localStorage.setItem(DATA_KEY, JSON.stringify(data));
+      localStorage.setItem(DATE_KEY, todayString());
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    }
+
+    function addMacro(macro, amount) {
+      history.push({
+        protein: data.protein,
+        carbs: data.carbs,
+        fat: data.fat
+      });
+
+      data[macro] += amount;
+
+      if (data[macro] < 0) {
+        data[macro] = 0;
+      }
+
+      saveData();
+      updateDisplay();
+    }
+
+    function customAdd(macro) {
+      const value = prompt("Enter amount to add:");
+
+      if (value === null || value.trim() === "") {
+        return;
+      }
+
+      const amount = Number(value);
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        alert("Please enter a positive number.");
+        return;
+      }
+
+      addMacro(macro, amount);
+    }
+
+    function undo() {
+      if (history.length === 0) {
+        return;
+      }
+
+      const previous = history.pop();
+
+      data = {
+        protein: previous.protein,
+        carbs: previous.carbs,
+        fat: previous.fat
+      };
+
+      saveData();
+      updateDisplay();
+    }
+
+    function resetDay() {
+      if (!confirm("Reset all macros for today?")) {
+        return;
+      }
+
+      history.push({
+        protein: data.protein,
+        carbs: data.carbs,
+        fat: data.fat
+      });
+
+      data = {
+        protein: 0,
+        carbs: 0,
+        fat: 0
+      };
+
+      saveData();
+      updateDisplay();
+    }
+
+    function saveTargets() {
+      const protein = Number(document.getElementById("proteinInput").value);
+      const carbs = Number(document.getElementById("carbsInput").value);
+      const fat = Number(document.getElementById("fatInput").value);
+
+      if (
+        !Number.isFinite(protein) || protein < 0 ||
+        !Number.isFinite(carbs) || carbs < 0 ||
+        !Number.isFinite(fat) || fat < 0
+      ) {
+        alert("Please enter valid target numbers.");
+        return;
+      }
+
+      targets = {
+        protein,
+        carbs,
+        fat
+      };
+
+      localStorage.setItem(TARGET_KEY, JSON.stringify(targets));
+
+      updateDisplay();
+    }
+
+    function updateTargetInputs() {
+      document.getElementById("proteinInput").value = targets.protein;
+      document.getElementById("carbsInput").value = targets.carbs;
+      document.getElementById("fatInput").value = targets.fat;
+
+      document.getElementById("proteinTarget").textContent = targets.protein;
+      document.getElementById("carbsTarget").textContent = targets.carbs;
+      document.getElementById("fatTarget").textContent = targets.fat;
+    }
+
+    function updateDisplay() {
+      document.getElementById("proteinValue").textContent = formatNumber(data.protein);
+      document.getElementById("carbsValue").textContent = formatNumber(data.carbs);
+      document.getElementById("fatValue").textContent = formatNumber(data.fat);
+
+      document.getElementById("proteinTarget").textContent = formatNumber(targets.protein);
+      document.getElementById("carbsTarget").textContent = formatNumber(targets.carbs);
+      document.getElementById("fatTarget").textContent = formatNumber(targets.fat);
+
+      document.getElementById("caloriesValue").textContent =
+        Math.round(
+          data.protein * 4 +
+          data.carbs * 4 +
+          data.fat * 9
+        );
+
+      updateProgress("protein");
+      updateProgress("carbs");
+      updateProgress("fat");
+    }
+
+    function updateProgress(macro) {
+      const target = targets[macro];
+
+      let percentage = 0;
+
+      if (target > 0) {
+        percentage = (data[macro] / target) * 100;
+      }
+
+      percentage = Math.min(percentage, 100);
+
+      document.getElementById(macro + "Progress").style.width =
+        percentage + "%";
+    }
+
+    function formatNumber(value) {
+      if (Number.isInteger(value)) {
+        return value;
+      }
+
+      return Number(value.toFixed(1));
+    }
+
+    function updateDate() {
+      const date = new Date();
+
+      document.getElementById("date").textContent =
+        date.toLocaleDateString(undefined, {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+    }
+
+    updateDate();
+    loadData();
+
+    setInterval(() => {
+      const currentDate = todayString();
+      const savedDate = localStorage.getItem(DATE_KEY);
+
+      if (savedDate !== currentDate) {
+        loadData();
+        updateDate();
+      }
+    }, 60000);
+  </script>
 
 </body>
 </html>
