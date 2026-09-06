@@ -84,7 +84,7 @@
 
     .buttons {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 7px;
     }
 
@@ -106,6 +106,10 @@
     .custom-button {
       background: #111;
       color: white;
+    }
+
+    .minus-button {
+      background: #e9e9ed;
     }
 
     .calories {
@@ -209,6 +213,8 @@
     </div>
 
     <div class="buttons">
+      <button class="minus-button" onclick="addMacro('protein', -1)">−1</button>
+      <button onclick="addMacro('protein', 1)">+1</button>
       <button onclick="addMacro('protein', 5)">+5</button>
       <button onclick="addMacro('protein', 10)">+10</button>
       <button onclick="addMacro('protein', 20)">+20</button>
@@ -231,6 +237,8 @@
     </div>
 
     <div class="buttons">
+      <button class="minus-button" onclick="addMacro('carbs', -1)">−1</button>
+      <button onclick="addMacro('carbs', 1)">+1</button>
       <button onclick="addMacro('carbs', 5)">+5</button>
       <button onclick="addMacro('carbs', 10)">+10</button>
       <button onclick="addMacro('carbs', 20)">+20</button>
@@ -253,6 +261,8 @@
     </div>
 
     <div class="buttons">
+      <button class="minus-button" onclick="addMacro('fat', -1)">−1</button>
+      <button onclick="addMacro('fat', 1)">+1</button>
       <button onclick="addMacro('fat', 5)">+5</button>
       <button onclick="addMacro('fat', 10)">+10</button>
       <button onclick="addMacro('fat', 20)">+20</button>
@@ -346,6 +356,8 @@
 
   function addMacro(macro, amount) {
 
+    const oldValue = data[macro];
+
     history.push({
       protein: data.protein,
       carbs: data.carbs,
@@ -353,6 +365,17 @@
     });
 
     data[macro] += amount;
+
+    // Never allow a macro to go below zero
+    if (data[macro] < 0) {
+      data[macro] = 0;
+    }
+
+    // If nothing actually changed, remove the unnecessary history entry
+    if (data[macro] === oldValue) {
+      history.pop();
+      return;
+    }
 
     saveData();
     updateDisplay();
@@ -415,9 +438,17 @@
 
   function saveTargets() {
 
-    const protein = parseFloat(document.getElementById("proteinInput").value);
-    const carbs = parseFloat(document.getElementById("carbsInput").value);
-    const fat = parseFloat(document.getElementById("fatInput").value);
+    const protein = parseFloat(
+      document.getElementById("proteinInput").value
+    );
+
+    const carbs = parseFloat(
+      document.getElementById("carbsInput").value
+    );
+
+    const fat = parseFloat(
+      document.getElementById("fatInput").value
+    );
 
     if (
       isNaN(protein) ||
